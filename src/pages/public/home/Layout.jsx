@@ -98,7 +98,7 @@ const Layout = () => {
 
                 <center>
                   <img
-                    src="/images/book.jpg"
+                    src="/images/logo-damaycerdas.jpeg"
                     alt="Logo TVRI"
                     className="img-fluid"
                     style={{
@@ -106,7 +106,7 @@ const Layout = () => {
                       borderRadius: '20px'
                     }}
                   />
-                </center>
+                </center><hr />
 
                 <h3
                   align="center"
