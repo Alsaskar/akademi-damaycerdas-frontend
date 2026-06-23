@@ -25,7 +25,7 @@ const _handleDowload = (id) => {
     );
 }
 
-const TableLibrary = ({ libraries, onDelete }) => {
+const TableLibrary = ({ libraries, onEdit, onDelete }) => {
     return (
         <Table striped bordered hover responsive size="sm">
             <thead>
@@ -91,6 +91,16 @@ const TableLibrary = ({ libraries, onDelete }) => {
                                     }}
                                 >
                                     <i className="bi bi-download"></i>
+                                </Button>
+
+                                <Button
+                                    variant="primary"
+                                    size="sm"
+                                    className="me-1"
+                                    onClick={() => onEdit(data)}
+                                    title="Edit Dokumen"
+                                >
+                                    <i className="bi bi-pencil"></i>
                                 </Button>
 
                                 <Button

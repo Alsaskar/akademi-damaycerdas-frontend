@@ -16,6 +16,10 @@ export const getDetailBySlugLibraryService = async (slug) => {
   return await axiosInstance.get(`/library/detail-slug/${slug}`);
 };
 
+export const editLibraryService = (id, data) => {
+  return axiosInstance.put(`/library/${id}`, data);
+};
+
 export const deleteLibraryService = (id) => {
   return axiosInstance.delete(`/library/${id}`);
 };

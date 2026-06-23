@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { createLibraryService, deleteLibraryService, getDetailBySlugLibraryService, getDetailLibraryService, getLibraryService } from "../services/libraryService"
+import { createLibraryService, deleteLibraryService, editLibraryService, getDetailBySlugLibraryService, getDetailLibraryService, getLibraryService } from "../services/libraryService"
 
 export const useLibrary = () => {
     const [loading, setLoading] = useState(false)
@@ -61,6 +61,26 @@ export const useLibrary = () => {
         }
     }
 
+    const editLibrary = async (id, data) => {
+        setLoading(true);
+
+        try {
+            const res = await editLibraryService(id, data);
+
+            return {
+                success: true,
+                message: res.data.message
+            };
+        } catch (err) {
+            return {
+                success: false,
+                message: err.response?.data?.message || "Gagal mengupdate data"
+            };
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const removeLibrary = async (id) => {
         setLoading(true);
 
@@ -85,6 +105,7 @@ export const useLibrary = () => {
         addLibrary,
         fetchLibrary,
         getDetailLibrary,
+        editLibrary,
         removeLibrary,
         getDetailBySlugLibrary,
         loading

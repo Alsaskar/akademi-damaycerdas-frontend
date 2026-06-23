@@ -1,6 +1,7 @@
 import DynamicPagination from "@/components/DynamicPagination";
 import ModalAddLibrary from "@/modules/library/components/ModalAdd";
 import ModalDeleteLibrary from "@/modules/library/components/ModalDelete";
+import ModalEditLibrary from "@/modules/library/components/ModalEdit";
 import TableLibrary from "@/modules/library/components/TableLibrary";
 import { useLibrary } from "@/modules/library/hooks/useLibrary";
 import { useEffect, useState } from "react";
@@ -21,6 +22,13 @@ const Layout = () => {
     const [showModalAdd, setShowModalAdd] = useState(false);
     const _handleShowModalAdd = () => setShowModalAdd(true);
     const _handleCloseModalAdd = () => setShowModalAdd(false);
+
+    const [showModalEdit, setShowModalEdit] = useState(false)
+    const _handleShowModalEdit = (data) => {
+        setSelectedData(data)
+        setShowModalEdit(true)
+    }
+    const _handleCloseModalEdit = () => setShowModalEdit(false)
 
     const [showModalDelete, setShowModalDelete] = useState(false)
     const _handleShowModalDelete = (data) => {
@@ -57,6 +65,13 @@ const Layout = () => {
             <ModalAddLibrary 
                 show={showModalAdd}
                 handleClose={_handleCloseModalAdd}
+                onSuccess={_fetchData}
+            />
+
+            <ModalEditLibrary 
+                data={selectedData}
+                show={showModalEdit}
+                handleClose={_handleCloseModalEdit}
                 onSuccess={_fetchData}
             />
 
@@ -105,6 +120,7 @@ const Layout = () => {
 
             <TableLibrary
                 libraries={libraries}
+                onEdit={_handleShowModalEdit}
                 onDelete={_handleShowModalDelete}
             />
 

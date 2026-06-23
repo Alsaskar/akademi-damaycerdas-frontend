@@ -27,27 +27,11 @@ export const validationSchema = Yup.object({
 
     status: Yup.string()
         .required("Status wajib dipilih"),
-
-    file: Yup.mixed()
-        .required("File dokumen wajib dipilih")
-        .test(
-            "fileSize",
-            "Ukuran file maksimal 50 MB",
-            value => {
-                if (!value) return true;
-                return value.size <= 50 * 1024 * 1024;
-            }
-        )
-        .test(
-            "fileFormat",
-            "Format file harus PDF, DOC, DOCX, PPT atau PPTX",
-            value => !value || ALLOWED_FILE_TYPES.includes(value.type)
-        )
 });
 
-const ModalAddLibrary = ({ show, handleClose = () => { }, onSuccess = () => { } }) => {
+const ModalEditLibrary = ({ data, show, handleClose = () => { }, onSuccess = () => { } }) => {
     const { showToast, message, success, progress, show: showToastMessage, hide } = useToast();
-    const { addLibrary } = useLibrary()
+    const { editLibrary } = useLibrary()
     const { fetchLibraryCategory } = useLibraryCategory()
     const [categories, setCategories] = useState([])
     const fileInputRef = useRef(null);
@@ -55,13 +39,14 @@ const ModalAddLibrary = ({ show, handleClose = () => { }, onSuccess = () => { } 
     const _handleSubmit = async (values, { setSubmitting, resetForm }) => {
         const formData = new FormData();
 
-        formData.append("title", values.title);
-        formData.append("description", values.description);
-        formData.append("categoryId", values.categoryId);
-        formData.append("status", values.status);
-        formData.append("file", values.file);
+        const payload = {
+            title: values.title,
+            description: values.description,
+            categoryId: values.categoryId,
+            status: values.status
+        }
 
-        const res = await addLibrary(formData);
+        const res = await editLibrary(data.id, payload);
 
         showToastMessage(res.message, res.success);
 
@@ -111,16 +96,15 @@ const ModalAddLibrary = ({ show, handleClose = () => { }, onSuccess = () => { } 
                 size="lg"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Tambahkan Dokumen </Modal.Title>
+                    <Modal.Title>Edit Dokumen </Modal.Title>
                 </Modal.Header>
 
                 <Formik
                     initialValues={{
-                        title: '',
-                        description: '',
-                        categoryId: '',
-                        status: 'draft',
-                        file: null
+                        title: data.title || "",
+                        description: data.description || "",
+                        categoryId: data.categoryId || "",
+                        status: data.status || "",
                     }}
                     validationSchema={validationSchema}
                     onSubmit={_handleSubmit}
@@ -129,6 +113,8 @@ const ModalAddLibrary = ({ show, handleClose = () => { }, onSuccess = () => { } 
 
                         <form onSubmit={handleSubmit}>
                             <Modal.Body>
+
+                                <div className='alert alert-warning'>Anda hanya bisa mengedit informasi dokumen saja</div>
 
                                 <Row className="g-3">
 
@@ -219,29 +205,6 @@ const ModalAddLibrary = ({ show, handleClose = () => { }, onSuccess = () => { } 
                                         </Form.Group>
                                     </Col>
 
-                                    <Col md={12}>
-                                        <Form.Group>
-                                            <Form.Label>File Dokumen</Form.Label>
-
-                                            <Form.Control
-                                                ref={fileInputRef}
-                                                type="file"
-                                                onChange={(e) => {
-                                                    setFieldValue(
-                                                        "file",
-                                                        e.currentTarget.files[0]
-                                                    );
-                                                }}
-                                                isInvalid={touched.file && errors.file}
-                                            />
-                                            <Form.Text muted>Format yang didukung: PDF, DOC, DOCX, PPT, PPTX. Maksimal 50 MB.</Form.Text>
-
-                                            <Form.Control.Feedback type="invalid">
-                                                {errors.file}
-                                            </Form.Control.Feedback>
-                                        </Form.Group>
-                                    </Col>
-
                                 </Row>
 
                             </Modal.Body>
@@ -272,4 +235,4 @@ const ModalAddLibrary = ({ show, handleClose = () => { }, onSuccess = () => { } 
     );
 };
 
-export default ModalAddLibrary;
+export default ModalEditLibrary;
