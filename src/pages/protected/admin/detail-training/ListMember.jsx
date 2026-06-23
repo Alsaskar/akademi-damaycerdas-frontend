@@ -1,0 +1,135 @@
+import DynamicPagination from "@/components/DynamicPagination";
+import MemberTrainigTable from "@/modules/training/components/MemberTrainingTable";
+import { useTraining } from "@/modules/training/hooks/useTraining";
+import { useEffect, useState } from "react";
+import { Card, Col, Row } from "react-bootstrap"
+
+const ListMember = ({ trainingId }) => {
+    const { getParticipants } = useTraining()
+    const [members, setMembers] = useState([])
+    const [summary, setSummary] = useState({
+        totalParticipant: 0,
+    });
+
+    // pagination state
+    const [page, setPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
+    const [search, setSearch] = useState("")
+    const [status, setStatus] = useState("")
+
+    const [showModalDelete, setShowModalDelete] = useState(false)
+    const _handleShowModalDelete = (data) => {
+        setSelectedData(data)
+        setShowModalDelete(true)
+    }
+    const _handleCloseModalDelete = () => setShowModalDelete(false)
+
+    const _fetchData = async () => {
+        const res = await getParticipants(trainingId, page, search, status);
+
+        if (res) {
+            setMembers(res.data.data);
+            setSummary(res.data.summary);
+            setCurrentPage(res.data.currentPage);
+            setTotalPages(res.data.totalPages);
+        }
+    };
+
+    const handlePageChange = (number) => {
+        setPage(number);
+    };
+
+    const _handleChangeStatus = (e) => {
+        setStatus(e.target.value)
+        setPage(1)
+    }
+
+    useEffect(() => {
+        _fetchData()
+    }, [page, search, status])
+
+    return (
+        <>
+            <Row className="g-3 mb-4">
+                <Col md={4}>
+                    <Card className="border-0 shadow-sm">
+                        <Card.Body>
+                            <small className="text-muted">
+                                Total Peserta
+                            </small>
+
+                            <h3 className="fw-bold mb-0">
+                                120
+                            </h3>
+                        </Card.Body>
+                    </Card>
+                </Col>
+
+                <Col md={4}>
+                    <Card className="border-0 shadow-sm">
+                        <Card.Body>
+                            <small className="text-muted">
+                                Hadir
+                            </small>
+
+                            <h3 className="fw-bold text-success mb-0">
+                                95
+                            </h3>
+                        </Card.Body>
+                    </Card>
+                </Col>
+
+                <Col md={4}>
+                    <Card className="border-0 shadow-sm">
+                        <Card.Body>
+                            <small className="text-muted">
+                                Tidak Hadir
+                            </small>
+
+                            <h3 className="fw-bold text-danger mb-0">
+                                25
+                            </h3>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+
+            <div className="row g-2 mb-2 align-items-end">
+
+                {/* Search */}
+                <div className="col-md-4 col-6">
+                    <input
+                        type="text"
+                        className="form-control form-select-sm"
+                        placeholder="Cari Member..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+                </div>
+                <div className="col-md-2 col-6">
+                    <select className="form-select form-select-sm" onChange={_handleChangeStatus}>
+                        <option value="">Semua Status</option>
+                        <option value="active">Hadir</option>
+                        <option value="inactive">Tidak Hadir</option>
+                    </select>
+                </div>
+            </div>
+
+            <MemberTrainigTable
+                members={members}
+                onDelete={_handleShowModalDelete}
+            />
+
+            <DynamicPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                handlePageChange={handlePageChange}
+            />
+
+        </>
+    )
+}
+
+export default ListMember

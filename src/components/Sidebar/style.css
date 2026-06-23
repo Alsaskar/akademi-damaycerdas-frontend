@@ -1,0 +1,131 @@
+.sidebar-wrapper {
+  position: absolute;
+  transition: 0.3s;
+  margin-left: -250px; /* harus sama dengan sidebar-content */
+  width: 250px; /* harus sama dengan sidebar-content */
+}
+
+.sidebar-wrapper.show {
+  margin-left: 0;
+}
+
+/* Medium devices (tablets, 768px and up) inside .show */
+@media (min-width: 768px) {
+  .sidebar-wrapper.show {
+    margin-left: -250px; /* harus sama dengan sidebar-content */
+  }
+}
+
+.sidebar-wrapper .backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.sidebar-wrapper .backdrop.show {
+  opacity: 0.5;
+  z-index: 1040;
+}
+
+.sidebar-wrapper .sidebar-content {
+  position: fixed;
+  height: 100vh;
+  width: 250px; /* harus sama dengan sidebar-wrapper */
+  z-index: 1045;
+  background-color: var(--bs-body-bg);
+  border-top: 3px solid #764ba2;
+  border-bottom: 3px solid #764ba2;
+}
+
+.sidebar-wrapper .sidebar-content .sidebar-menu {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 105px);
+  overflow-y: auto;
+}
+
+.sidebar-wrapper .sidebar-content .sidebar-menu .bottom {
+  position: absolute;
+  bottom: 0;
+}
+
+.sidebar-wrapper .sidebar-content .sidebar-menu .menus {
+  height: calc(100vh - 230px);
+  overflow-y: auto;
+}
+
+.sidebar-wrapper .sidebar-content .sidebar-menu .item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* margin-bottom: 0.25rem; */
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  text-decoration: none;
+  background-color: transparent; /* "none" bukan valid value untuk bg-color di CSS standar */
+  color: var(--bs-body-color);
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+}
+
+.sidebar-wrapper .sidebar-content .sidebar-menu .item:hover {
+  color: var(--bs-secondary-text-emphasis);
+  background-color: var(--bs-secondary-bg-subtle);
+}
+
+.sidebar-wrapper .sidebar-content .sidebar-menu .item.active {
+  /* background-color: var(--bs-primary-bg-subtle) !important;
+  color: var(--bs-primary-text-emphasis) !important; */
+  background-color: #764ba2;
+  color: #fff;
+}
+
+.sidebar-wrapper .sidebar-content .sidebar-menu .item .submenu-indicator {
+  position: absolute;
+  right: 8px;
+  transition: 0.2s;
+}
+
+.sidebar-wrapper .sidebar-content .sidebar-menu .item .submenu-indicator.open {
+  transform: rotate(-90deg);
+}
+
+.sidebar-wrapper .sidebar-content .sidebar-menu .submenu-items {
+  margin-bottom: 5px;
+}
+
+/* Medium devices (tablets, 768px and up) for .sidebar-wrapper */
+@media (min-width: 768px) {
+  .sidebar-wrapper {
+    position: relative;
+    margin-left: 0;
+  }
+}
+
+.sidebar-wrapper .close-icon {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  font-size: 24px;
+  z-index: 999;
+  cursor: pointer;
+  transition: 0.3s;
+  opacity: 0;
+}
+
+.sidebar-wrapper .close-icon.show {
+  position: absolute;
+  right: -32px;
+  font-size: 24px;
+  z-index: 999;
+  cursor: pointer;
+  opacity: 1;
+}

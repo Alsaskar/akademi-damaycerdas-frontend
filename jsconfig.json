@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+    // "checkJs": true, // untuk mengaktifkan pemeriksaan komponen yang belum diimport, hapus jika sudah tidak perlu
+    // "jsx": "react-jsx" // untuk mengaktifkan pemeriksaan komponen yang belum diimport, hapus jika sudah tidak perlu
+  }
+}

@@ -1,0 +1,32 @@
+.brand {
+  font-weight: bold;
+  text-align: center;
+  padding: 0 20px;
+  color: var(--bs-body-color);
+}
+
+.brand a {
+  text-decoration: none;
+  color: var(--bs-body-color);
+}
+
+.brand .logo {
+  height: 25px;
+  margin-right: 10px;
+}
+
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .brand {
+    margin-bottom: 15px;
+    padding: 0 0.5rem;
+  }
+
+  .brand .logo {
+    height: 40px;
+  }
+
+  .brand .title {
+    font-size: 18px;
+  }
+}
